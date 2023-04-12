@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'user-rest-api-sam
+
+  Sample SAM Template for user-rest-api-sam
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+    Runtime: java11
+    Architectures:
+    - x86_64
+    MemorySize: 512
+Resources:
+  PostHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: PostHandlerFunction
+      Handler: dev.jeffersonfreitas.aws.user.sam.PostHandler::handleRequest
+      Events:
+        UserApiSAM:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: post
+    Metadata:
+      SamResourceId: PostHandlerFunction
+Outputs:
+  UserApiSAM:
+    Description: API Gateway created a new user
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users
+  PostHandlerFunction:
+    Description: PostHandlerFunction Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - PostHandlerFunction
+      - Arn
+  PostHandlerFunctionIamRole:
+    Description: Implicit IAM Role created for PostHandlerFunction function
+    Value:
+      Fn::GetAtt:
+      - PostHandlerFunctionRole
+      - Arn
