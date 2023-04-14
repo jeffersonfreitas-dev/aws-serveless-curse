@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'ApiTransformation
+
+  Sample SAM Template for ApiTransformation
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+    Tracing: Active
+  Api:
+    TracingEnabled: true
+Resources:
+  ApiTransformationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ApiTransformationFunction
+      Handler: helloworld.App::handleRequest
+      Runtime: java11
+      Architectures:
+      - x86_64
+      MemorySize: 512
+      Events:
+        ApiTransformationApi:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: post
+    Metadata:
+      SamResourceId: ApiTransformationFunction
+Outputs:
+  ApiTransformationApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/users/
+  ApiTransformationFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - ApiTransformationFunction
+      - Arn
+  ApiTransformationFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - ApiTransformationFunctionRole
+      - Arn

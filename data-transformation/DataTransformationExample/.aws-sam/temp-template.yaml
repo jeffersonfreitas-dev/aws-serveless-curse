@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 128
+      Handler: dev.jeffersonfreitas.aws.PostHandler
+      CodeUri: C:\Users\jeffersonfreitas\Desktop\Projetos\jeff\aws-learning\aws-features\data-transformation\DataTransformationExample
+      Runtime: java11
+      Architectures:
+        - x86_64
